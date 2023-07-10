@@ -18,9 +18,11 @@ const DoQuestions = () => {
     const [speakText, setSpeakText] = useState(QArray[currQIndex].questionText);
 
     const synth  = window.speechSynthesis;
-    const [ speak, voices ] = [ new SpeechSynthesisUtterance(speakText), synth.getVoices() ];
+    const [ speech, voices ] = [ new SpeechSynthesisUtterance(speakText), synth.getVoices() ];
     // to check voices array, render {console.log(window.speechSynthesis.getVoices())}
-    
+    // can find with voices[i].name == "lang"
+    // korean is index 11
+    speech.voice = voices[11];
     
     // setQ instead of setNextQ? states set start but this feels clunky
     const setNextQ = () => {
@@ -57,6 +59,37 @@ const DoQuestions = () => {
     };
 
     return (
+        <div class="flex flex-row">
+            <div class="basis-1/2"> Hello</div>
+            <div class="basis-1/2"> Goodbye</div>
+        </div>
+        /*
+        <div classname="flex border rounded-lg shadow-lg">
+            <p classname="text-2xl font-semibold px-5 py-5">
+                {QArray[currQIndex].questionText}
+            </p>
+            <button  
+                // eventually want to play each phrase instead of whole thing
+                onClick={() => synth.speak(speech)}>
+                Play 
+            </button>
+            <p>
+                {'Hints: ' + QArray[currQIndex].hints } 
+            </p>
+
+            <input // user answer... needs <form> 
+                type="text"
+                id="userInput"
+                name="userInput" // field value submitted to server
+                value={userInput} // defaultValue changes this to
+                // uncontrolled component which doesn't use onChange
+                onChange={(e) => handleInputChange(e, QArray[currQIndex].correctAnswer)}
+                // https://bobbyhadz.com/blog/react-get-input-value
+                >
+            </input>
+        </div> */
+        
+        /*
         finished ? (
             <div className='score'>
                 Score: {score / QArray.length} 
@@ -67,12 +100,14 @@ const DoQuestions = () => {
                 <p
                     value={speakText}
                 />
-                <button // korean is index 11 
+                <button  
                     // eventually want to play each phrase instead of whole thing
-                    onClick={() => speak({ text: speakText, voice: voices[11] })}>Speak</button>
+                    onClick={() => synth.speak(speech)}>
+                    Play 
+                </button>
                 <br></br>
                 <p>
-                    {'Hints: ' + QArray[currQIndex].hints /* answer hints?*/} 
+                    {'Hints: ' + QArray[currQIndex].hints } 
                 </p>
 
                 <input // user answer... needs <form> 
@@ -104,7 +139,7 @@ const DoQuestions = () => {
                 )}
             </div>    
    
-        )
+        ) */
     );
 };
 
